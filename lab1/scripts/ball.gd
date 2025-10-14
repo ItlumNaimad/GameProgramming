@@ -5,7 +5,7 @@ extends CharacterBody2D
 signal out_of_bounds
 
 # The speed of the ball.
-@export var speed = 200
+@export var speed = 500
 
 # This function will reset the ball's position and velocity.
 func start():
