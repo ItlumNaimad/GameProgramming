@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ya8o8icphmih"]
+
+[ext_resource type="PackedScene" uid="uid://c1pymloqrsy0w" path="res://scenes/palette.tscn" id="1_8rem4"]
+[ext_resource type="Script" uid="uid://vh83odbaq8w2" path="res://scripts/player.gd" id="2_gi7kc"]
+[ext_resource type="Script" uid="uid://dwjvvpe865j4j" path="res://scripts/palette.gd" id="3_kewym"]
+[ext_resource type="PackedScene" uid="uid://b0ewte5towllq" path="res://scenes/ball.tscn" id="4_6c5u0"]
+
+[node name="Stage" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.206292, 0.000212642, 0.605868, 1)
+
+[node name="Palette1" parent="." instance=ExtResource("1_8rem4")]
+position = Vector2(72, 288)
+script = ExtResource("2_gi7kc")
+
+[node name="Palette2" parent="." instance=ExtResource("1_8rem4")]
+position = Vector2(1080, 296)
+scale = Vector2(0.992516, 1)
+script = ExtResource("3_kewym")
+
+[node name="ball" parent="." instance=ExtResource("4_6c5u0")]
+position = Vector2(583, 301)

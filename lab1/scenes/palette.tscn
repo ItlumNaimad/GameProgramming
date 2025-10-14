@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1pymloqrsy0w"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_med4h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4yp3"]
+size = Vector2(32, 152)
+
+[node name="Palette" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Polygon2D" parent="."]
+position = Vector2(0.485659, 6.04763)
+rotation = 3.14159
+scale = Vector2(11.4594, -48.7938)
+color = Color(0.551175, 0.0971999, 0.56545, 1)
+antialiased = true
+texture = SubResource("CanvasTexture_med4h")
+polygon = PackedVector2Array(-1.32858, 1.51194, 1.41334, 1.51194, 1.41334, -1.59587, -1.32858, -1.59587)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_r4yp3")
