@@ -9,10 +9,10 @@ radius = 20.2237
 [node name="ball" type="CharacterBody2D"]
 script = ExtResource("1_7s4qf")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_n1dj2")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0.499998, -2.98023e-07)
 scale = Vector2(0.609375, 0.625)
 texture = ExtResource("2_cxlvu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_n1dj2")

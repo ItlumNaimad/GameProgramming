@@ -15,6 +15,10 @@ run/main_scene="uid://ya8o8icphmih"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
+[global_group]
+
+paddles=""
+
 [rendering]
 
 renderer/rendering_method="mobile"
