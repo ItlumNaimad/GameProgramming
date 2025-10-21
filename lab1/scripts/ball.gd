@@ -3,9 +3,10 @@ extends CharacterBody2D
 
 # This is like an alarm the ball can send out.
 signal out_of_bounds
-
 # The speed of the ball.
 @export var speed = 500
+#  How much does the movement of the paddle affect the bounce? 0.0 - not at all, 1.0 - very much.
+@export var paddle_influence = 0.3
 
 # This function will reset the ball's position and velocity.
 func start():
@@ -35,13 +36,32 @@ func _physics_process(delta):
 
 	# Move the ball and check if we hit anything
 	var collision = move_and_collide(velocity * delta)
-	
-	# If we hit something...
 	if collision:
-		# "bounce" is a handy function that reflects the velocity perfectly
+		# 1. Najpierw obliczamy podstawowe, idealne odbicie
 		velocity = velocity.bounce(collision.get_normal())
-		
-		# Let's make the game harder as it goes on!
 		var thing_we_hit = collision.get_collider()
+		# 2. Sprawdzamy, czy to paletka
 		if thing_we_hit.is_in_group("paddles"):
-			velocity *= 1.05 # Increase speed by 5%
+			
+			# 3. Pobieramy prędkość paletki. 
+			# Jest szybszy i bezpieczniejszy od get(), bo wiemy, że obiekt jest w grupie "paddles".
+			var paddle_velocity = thing_we_hit.velocity
+			
+			# 4. Dodajemy część pionowej prędkości paletki do prędkości piłki.
+			#    To jest kluczowa linia!
+			velocity.y += paddle_velocity.y * paddle_influence
+
+			# 5. Zwiększamy prędkość i upewniamy się, że piłka nie zwolniła
+			#    po dodaniu "podkręcenia". Normalizujemy wektor i mnożymy przez nową prędkość.
+			var current_speed = velocity.length()
+			var new_speed = current_speed * 1.05 # Zwiększamy o 5%
+			# Ustawiamy nową prędkość, zachowując nowy kierunek
+			velocity = velocity.normalized() * new_speed
+
+
+func _on_ai_side_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
+
+
+func _on_player_side_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.

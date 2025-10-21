@@ -13,21 +13,26 @@ func _physics_process(delta):
 	# 2. Oblicz maksymalny ruch w tej klatce
 	var max_step = speed * delta
 	
-	# 3. Użyj move_toward, aby obliczyć nową pozycję Y.
-	#    Funkcja ta przesunie 'global_position.y' w kierunku 'target_y'
-	#    o maksymalnie 'max_step', zatrzymując się idealnie na celu.
+	# 3. Użyj move_toward, aby obliczyć nową docelową pozycję Y
 	var new_y = move_toward(global_position.y, target_y, max_step)
 	
-	# 4. Oblicz prędkość potrzebną, aby dostać się z obecnej pozycji 
-	#    do nowej pozycji w ciągu jednej klatki fizyki (delta).
-	#    To jest kluczowy krok, aby velocity odzwierciedlało ruch!
-	velocity.y = (new_y - global_position.y) / delta
+	# 4. Oblicz wektor przesunięcia (motion vector)
+	# Chcemy się przesunąć z 'global_position.y' do 'new_y'.
+	# Oś X pozostaje nietknięta (przesunięcie o 0).
+	var motion = Vector2(0, new_y - global_position.y)
 	
-	# 5. Zablokuj oś X
-	velocity.x = 0
+	# 5. ZASTOSUJ ZMIANĘ:
+	# Użyj move_and_collide. Ta funkcja nie będzie się ślizgać.
+	move_and_collide(motion)
 	
-	# 6. Wywołaj move_and_slide(), który użyje obliczonej prędkości
-	move_and_slide()
+	# 6. Aktualizacja 'velocity' na użytek piłki.
+	# Ta linijka jest kluczowa, aby piłka wciąż mogła odczytać 
+	# prędkość paletki przy odbiciu (dla podkręcenia).
+	# Dzielimy przez delta, aby zamienić 'przesunięcie' z powrotem na 'prędkość'.
+	if delta > 0:
+		velocity = motion / delta
+	else:
+		velocity = Vector2.ZERO
 # Stare próby rozwiązania poruszania się
 #func _process(delta):
 	## przesuwanie paletki z pominięciem fizyki silnika

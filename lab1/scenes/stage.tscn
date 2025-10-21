@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ya8o8icphmih"]
+[gd_scene load_steps=12 format=3 uid="uid://ya8o8icphmih"]
 
 [ext_resource type="PackedScene" uid="uid://c1pymloqrsy0w" path="res://scenes/palette.tscn" id="1_8rem4"]
 [ext_resource type="Script" uid="uid://vh83odbaq8w2" path="res://scripts/player.gd" id="2_gi7kc"]
 [ext_resource type="Script" uid="uid://dwjvvpe865j4j" path="res://scripts/palette.gd" id="3_kewym"]
 [ext_resource type="PackedScene" uid="uid://b0ewte5towllq" path="res://scenes/ball.tscn" id="4_6c5u0"]
+[ext_resource type="PackedScene" uid="uid://bto57oeq7q1bo" path="res://scenes/score.tscn" id="5_vcsse"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6c5u0"]
-size = Vector2(1152, 18)
+size = Vector2(1152, 12.5)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_vcsse"]
 
@@ -14,6 +15,12 @@ size = Vector2(1152, 18)
 size = Vector2(1160, 20.5)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_st0q7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcsse"]
+size = Vector2(16, 608)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_st0q7"]
+size = Vector2(16, 608)
 
 [node name="Stage" type="Node2D"]
 
@@ -35,15 +42,15 @@ script = ExtResource("3_kewym")
 position = Vector2(583, 301)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(552, 40)
+position = Vector2(552, 48)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(24, 0)
+position = Vector2(24, -8)
 shape = SubResource("RectangleShape2D_6c5u0")
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
-position = Vector2(24, 0)
-scale = Vector2(1152, 20.25)
+position = Vector2(24, -5.0625)
+scale = Vector2(1152, 10.125)
 texture = SubResource("CanvasTexture_vcsse")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
@@ -56,3 +63,24 @@ shape = SubResource("RectangleShape2D_2so7o")
 position = Vector2(-3.05176e-05, -4.00001)
 scale = Vector2(1152, 8.00006)
 texture = SubResource("CanvasTexture_st0q7")
+
+[node name="player_side" type="Area2D" parent="."]
+position = Vector2(8, 320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_side"]
+shape = SubResource("RectangleShape2D_vcsse")
+
+[node name="ai_side" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ai_side"]
+position = Vector2(1144, 320)
+shape = SubResource("RectangleShape2D_st0q7")
+
+[node name="Score" parent="." instance=ExtResource("5_vcsse")]
+offset_left = 576.0
+offset_top = 112.0
+offset_right = 576.0
+offset_bottom = 112.0
+
+[connection signal="body_entered" from="player_side" to="ball" method="_on_player_side_body_entered"]
+[connection signal="body_entered" from="ai_side" to="ball" method="_on_ai_side_body_entered"]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://bto57oeq7q1bo"]
+
+[ext_resource type="Script" uid="uid://cyhu3dwvugtdo" path="res://scripts/score.gd" id="1_8juob"]
+
+[node name="Score" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8juob")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Player" type="Label" parent="CanvasLayer"]
+offset_left = -80.0
+offset_right = -40.0
+offset_bottom = 23.0
+
+[node name="AI" type="Label" parent="CanvasLayer"]
+offset_left = 32.0
+offset_right = 72.0
+offset_bottom = 23.0
