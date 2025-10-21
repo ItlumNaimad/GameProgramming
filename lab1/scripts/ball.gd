@@ -89,3 +89,4 @@ func _on_player_side_body_entered(body: Node2D) -> void:
 	if body == self:
 		ai_scored.emit()
 		start() # Resetuj piłkę
+		

@@ -33,6 +33,9 @@ func _physics_process(delta):
 		velocity = motion / delta
 	else:
 		velocity = Vector2.ZERO
+		
+
+	
 # Stare próby rozwiązania poruszania się
 #func _process(delta):
 	## przesuwanie paletki z pominięciem fizyki silnika
