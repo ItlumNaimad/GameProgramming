@@ -19,3 +19,8 @@ self_modulate = Color(0.625868, 0.342899, 0.863224, 1)
 show_behind_parent = true
 scale = Vector2(18, 18)
 texture = SubResource("CanvasTexture_mkf8s")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_screen_exited"]

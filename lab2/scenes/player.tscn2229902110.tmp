@@ -7,7 +7,7 @@
 [sub_resource type="CanvasTexture" id="CanvasTexture_3vyb7"]
 specular_color = Color(0.504627, 0.371551, 0.222434, 1)
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -19,6 +19,7 @@ scale = Vector2(18, 18)
 texture = SubResource("CanvasTexture_3vyb7")
 
 [node name="BulletSpawn" type="Marker2D" parent="."]
+position = Vector2(-1, -9)
 scale = Vector2(3.82845, -22.725)
 
 [node name="Timer" type="Timer" parent="."]
