@@ -1,22 +1,108 @@
-[gd_scene load_steps=4 format=3 uid="uid://diawqd7f81jm2"]
+[gd_scene load_steps=11 format=3 uid="uid://diawqd7f81jm2"]
 
 [ext_resource type="Script" uid="uid://db1luf2f5o4hd" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://bl1boqht35p41" path="res://textures/JOTPK_player_animations.png" id="2_g2els"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
+atlas = ExtResource("2_g2els")
+region = Rect2(16, 20, 16, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
+atlas = ExtResource("2_g2els")
+region = Rect2(16, 16, 16, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_g2els")
+region = Rect2(16, 20, 16, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
+atlas = ExtResource("2_g2els")
+region = Rect2(16, 24, 16, 4)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3vyb7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhqgy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2els")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuyoq")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("2_g2els")
+region = Rect2(0, 15, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qlg0r"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"face_down",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"face_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"face_right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"face_up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8vuu"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_3vyb7"]
-specular_color = Color(0.504627, 0.371551, 0.222434, 1)
+size = Vector2(40, 43.5)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_3vyb7")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_u8vuu")
+[node name="Legs" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+position = Vector2(3, 19)
+scale = Vector2(2.75, 2.75)
+sprite_frames = SubResource("SpriteFrames_3vyb7")
+animation = &"idle"
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.553921, 0.386002, 0.155417, 1)
-scale = Vector2(18, 18)
-texture = SubResource("CanvasTexture_3vyb7")
+[node name="Torso" type="AnimatedSprite2D" parent="."]
+z_index = 1
+texture_filter = 5
+position = Vector2(-5.96046e-08, 0.999999)
+scale = Vector2(2.75, 2.75)
+sprite_frames = SubResource("SpriteFrames_qlg0r")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.75)
+shape = SubResource("RectangleShape2D_u8vuu")
 
 [node name="BulletSpawn" type="Marker2D" parent="."]
 scale = Vector2(3.82845, -22.725)

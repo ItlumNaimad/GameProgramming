@@ -1,11 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://ds28sa0r2hoc6"]
+[gd_scene load_steps=5 format=3 uid="uid://ds28sa0r2hoc6"]
 
 [ext_resource type="Script" uid="uid://0ru456cydsht" path="res://scripts/bullet.gd" id="1_mkf8s"]
+[ext_resource type="Texture2D" uid="uid://clnw80kppn2je" path="res://textures/JOTPK_bullet.png" id="2_y25gk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h1aey"]
 radius = 11.1803
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_mkf8s"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_l5glv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_y25gk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="bullet" type="Area2D"]
 script = ExtResource("1_mkf8s")
@@ -13,14 +23,11 @@ script = ExtResource("1_mkf8s")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h1aey")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.459452, 0.227049, 0.869854, 1)
-self_modulate = Color(0.625868, 0.342899, 0.863224, 1)
-show_behind_parent = true
-scale = Vector2(18, 18)
-texture = SubResource("CanvasTexture_mkf8s")
-
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4.5, 4.5)
+sprite_frames = SubResource("SpriteFrames_l5glv")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_screen_exited"]

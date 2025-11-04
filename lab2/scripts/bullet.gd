@@ -24,7 +24,10 @@ func _on_body_entered(body: Node2D) -> void:
 
 	# OPCJONALNIE: Sprawdź, czy to wróg (dodaj wrogów do grupy "enemies")
 	if body.is_in_group("enemies"):
-		body.queue_free() # Na razie niszczymy wroga
+	# Zamiast niszczyć wroga, wywołaj na nim funkcję śmierci
+		body.die()
+# Zniszcz pocisk (bo w coś trafił)
+	queue_free()
 
 	# Zniszcz pocisk, bo trafił w coś, co nie jest graczem.
 	queue_free()
