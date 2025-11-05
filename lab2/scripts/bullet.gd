@@ -25,7 +25,8 @@ func _on_body_entered(body: Node2D) -> void:
 	# OPCJONALNIE: Sprawdź, czy to wróg (dodaj wrogów do grupy "enemies")
 	if body.is_in_group("enemies"):
 	# Zamiast niszczyć wroga, wywołaj na nim funkcję śmierci
-		body.die()
+	# Trzeba było dopisać .call_deffered() bo inaczej debuger zgłaszał błąd
+		body.die.call_deferred()
 # Zniszcz pocisk (bo w coś trafił)
 	queue_free()
 

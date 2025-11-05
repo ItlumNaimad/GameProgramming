@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 var player: Node2D
 
+@onready var body_anim: AnimatedSprite2D = $body
+
 var speed = 200
 func _ready():
 	# Zakłada, że Twój gracz jest w grupie "player"
@@ -15,11 +17,11 @@ func _physics_process(delta: float) -> void:
 func die():
 	# 1. Zatrzymaj ruch i wyłącz fizykę (odpowiednik "Static" )
 	set_physics_process(false)
+	velocity = Vector2.ZERO
 	$CollisionShape2D.disabled = true
 	
 	# 2. Tutaj możesz uruchomić animację śmierci
-	
-	# 3. Zniszcz obiekt po 2 sekundach 
-	# Użyj 'await' do prostej obsługi timera:
-	await get_tree().create_timer(2.0).timeout
+	body_anim.play("death")
+	await body_anim.animation_finished
+	# 3. Zniszcz obiekt po zakończeniu animacji
 	queue_free()
