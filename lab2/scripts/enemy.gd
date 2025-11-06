@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
 var player: Node2D
-
+# Sygnał śmierci przeciwnika
+signal enemy_died
 @onready var body_anim: AnimatedSprite2D = $body
 
-var speed = 200
+var speed = 170
 func _ready():
 	# Zakłada, że Twój gracz jest w grupie "player"
 	player = get_tree().get_first_node_in_group("player")
@@ -23,5 +24,7 @@ func die():
 	# 2. Tutaj możesz uruchomić animację śmierci
 	body_anim.play("death")
 	await body_anim.animation_finished
+	# Wyemituj sygnał śmierci przeciwnika
+	enemy_died.emit()
 	# 3. Zniszcz obiekt po zakończeniu animacji
 	queue_free()

@@ -1,5 +1,6 @@
 extends CharacterBody2D
-
+# Sygnał śmierci gracza
+signal player_died
 # --- Ustawienia Gracza ---
 @export var speed = 300.0
 
@@ -55,7 +56,20 @@ func _physics_process(delta: float) -> void:
 		# 4. Wyemituj sygnał z pozycją ORAZ kierunkiem
 		# Twój główny skrypt (np. stage.gd) będzie musiał to odebrać
 		shoot.emit(spawn_pos, attack_direction)
-
+	
+	# --- NOWY BLOK: Sprawdzanie kolizji z wrogiem ---
+	# To jest odpowiednik OnCollisionEnter2D [cite: 234]
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		
+		# Sprawdzamy, czy to, z czym się zderzyliśmy, jest wrogiem
+		if collision.get_collider().is_in_group("enemies"):
+			# 1. Wyemituj sygnał, że gracz zginął
+			player_died.emit()
+			# 2. Usuń gracza ze sceny
+			queue_free()
+			# Przerwij pętlę, nie musimy szukać dalszych kolizji
+			break
 
 # Ta funkcja jest automatycznie wywoływana, gdy Timer dobiegnie końca
 func _on_shoot_cooldown_timer_timeout():
