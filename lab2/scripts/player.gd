@@ -104,9 +104,9 @@ func update_animations(move_dir: Vector2, attack_dir: Vector2):
 		else:
 			torso_anim.play("face_down")
 	else:
-		# Patrzymy bardziej w LEWO or PRAWO
+		# Patrzymy bardziej w LEWO lub PRAWO
 		if facing_direction.x < 0:
 			torso_anim.play("face_left") 
 		
 		elif facing_direction.x > 0:
-			torso_anim.play("face_right") # Obróć ją, by patrzeć w lewo
+			torso_anim.play("face_right") # Obróć ją, by patrzeć w prawo
