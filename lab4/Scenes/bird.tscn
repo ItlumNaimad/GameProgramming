@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://cjxei0bm8jowq"]
+
+[ext_resource type="Script" uid="uid://b4skhrlpk2m81" path="res://Scripts/bird.gd" id="1_i8bdw"]
+[ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="2_mcegt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mcegt"]
+radius = 22.6716
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnvpi"]
+atlas = ExtResource("2_mcegt")
+region = Rect2(263, 64, 19, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vl8r2"]
+atlas = ExtResource("2_mcegt")
+region = Rect2(263, 90, 19, 13)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rr33m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnvpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vl8r2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bird" type="RigidBody2D"]
+script = ExtResource("1_i8bdw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mcegt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.54972e-06, 0.5)
+scale = Vector2(2.94737, 3.15385)
+sprite_frames = SubResource("SpriteFrames_rr33m")
