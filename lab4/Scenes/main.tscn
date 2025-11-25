@@ -1,8 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmcyjfhucjfju"]
+[gd_scene load_steps=5 format=3 uid="uid://dmcyjfhucjfju"]
 
 [ext_resource type="PackedScene" uid="uid://cjxei0bm8jowq" path="res://Scenes/bird.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://i02ror8dimst" path="res://Scripts/spawner.gd" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://dnmwte8gwh0ba" path="res://Scripts/background.gd" id="3_8gbba"]
+[ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="4_jjvhh"]
 
 [node name="Main" type="Node2D"]
 
 [node name="Bird" parent="." instance=ExtResource("1_jjgbg")]
-position = Vector2(382, 194)
+position = Vector2(247, 386)
+
+[node name="PipeSpawner" type="Node2D" parent="."]
+script = ExtResource("2_bo1nx")
+
+[node name="Timer" type="Timer" parent="PipeSpawner"]
+wait_time = 2.0
+autostart = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("3_8gbba")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(226, 428)
+scale = Vector2(3.08621, 3.33203)
+texture = ExtResource("4_jjvhh")
+region_enabled = true
+region_rect = Rect2(-1.5, -0.5, 145.5, 256.5)

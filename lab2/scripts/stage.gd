@@ -17,6 +17,7 @@ const BULLET = preload("res://scenes/bullet.tscn")
 @onready var score_label = $ScoreLabel
 @onready var game_over_label = $GameOverLabel
 var spawn_points: Array
+
 func _ready() -> void:
 	#  Podłącz sygnał "shoot" gracza do nowej funkcji "spawnera"
 	player.shoot.connect(_on_player_shoot)
@@ -97,7 +98,7 @@ func _on_player_died():
 	
 	# 3. Pokaż ekran Game Over
 	score_label.hide()
-	game_over_label.text = "GAME OVER\nKilled: %s\nPress Space to Restart" % score
+	game_over_label.text = "GAME OVER\nKilled: %s\nPress Y in Joystick to Restart" % score
 	game_over_label.show()
 
 # Funkcja do obsługi restartuw

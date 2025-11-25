@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://fswtmkrlscwf"]
+
+[ext_resource type="Script" uid="uid://di0eaqidfj3pc" path="res://Scripts/pipe.gd" id="1_n21g0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n21g0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hnit7"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_n21g0")
+
+[node name="TopPipe" type="Sprite2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TopPipe"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D"]
+shape = SubResource("RectangleShape2D_n21g0")
+
+[node name="BottomPipe" type="Sprite2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="BottomPipe"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe/StaticBody2D"]
+shape = SubResource("RectangleShape2D_hnit7")
+
+[node name="ScoreArea" type="Area2D" parent="."]
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
