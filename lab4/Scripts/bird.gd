@@ -45,7 +45,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		#if randi_range(0, 15) < 3:
 		#	angular_velocity += 0.1
 		#state.apply_torque_impulse(rotation_speed)
-		rotation_degrees = lerp(rotation_degrees, 90.0, rotation_speed)
+		rotation_degrees = lerp(rotation_degrees, 40.0, rotation_speed)
 	else:
 		# WZNOSZENIE:
 		# Trzymamy -30.

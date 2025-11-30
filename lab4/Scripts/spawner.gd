@@ -5,8 +5,7 @@ extends Node2D
 
 func _ready():
 	# Podłącz sygnał "timeout" z Timera w kodzie lub przez edytor
-	#$Timer.timeout.connect(spawn_pipe)
-	pass
+	$Timer.timeout.connect(spawn_pipe)
 
 func spawn_pipe():
 	# 1. Tworzymy nową instancję rury z pliku tscn
