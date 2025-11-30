@@ -1,47 +1,57 @@
 extends RigidBody2D
 
-# Siła wyskoku. Wartość ujemna, bo w Godocie oś Y w górę to wartości ujemne.
-@export var jump_force = -300.0
-# Opcjonalnie: maksymalny kąt obrotu przy spadaniu
-@export var max_rotation = 30.0
+@export var jump_force = -500.0
+
+# ZMIEŃ WARTOŚĆ: Tutaj dajemy np. 5.0 do 10.0. 
+# To oznacza "przesuwaj się o 10% dystansu w każdej klatce".
+# Nie dawaj tu dużych liczb typu 100 czy 400!
+@export var rotation_speed = 0.1
 
 var game_started = false
 
 func _ready():
-	# Na starcie wyłączamy fizykę, żeby ptak nie spadł od razu (TimeScale = 0 z instrukcji)
-	# freeze = true sprawia, że obiekt wisi w powietrzu
 	freeze = true 
+	# Upewnij się, że w Inspektorze "Lock Rotation" jest zaznaczone!
 
 func _input(event):
-	# Sprawdzamy, czy wciśnięto spację/myszkę (zdefiniuj akcję "jump" w Project Settings -> Input Map)
 	if event.is_action_pressed("jump"):
 		if not game_started:
 			start_game()
-		
 		jump()
 
 func start_game():
 	game_started = true
-	freeze = false # Odblokuj fizykę, grawitacja zaczyna działać
+	freeze = false 
 
 func jump():
-	# 1. Zerujemy aktualną prędkość pionową. 
-	# Bez tego, jeśli spadamy szybko, skok byłby słabszy (musiałby walczyć z pędem w dół).
 	linear_velocity.y = 0
-	
-	# 2. Nadajemy natychmiastowy impuls w górę.
 	apply_impulse(Vector2(0, jump_force))
+	
+	# Skok = natychmiast w górę (-30 stopni)
+	rotation_degrees = -30.0
 
-func _physics_process(delta):
-	# Opcjonalny efekt: Obracanie ptaka w zależności od prędkości (dziobem w dół jak spada)
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if not game_started:
+		return
+
+	# Logika spadania
 	if linear_velocity.y > 0:
-		# Spadamy -> obracaj w dół
-		rotation_degrees = lerp(rotation_degrees, max_rotation, 5 * delta)
+		# SPADANIE:
+		# Chcemy przejść z -30 (góra) do +90 (dół).
+		# Minus zamieni się w plus płynnie, przechodząc przez zero.
+		# Waga (trzeci parametr) musi być mała (np. 10 * 0.016 = 0.16), żeby było płynnie.
+		#print(rotation_speed * delta)
+		#print(rotation_degrees)
+		#if randi_range(0, 15) < 3:
+		#	angular_velocity += 0.1
+		#state.apply_torque_impulse(rotation_speed)
+		rotation_degrees = lerp(rotation_degrees, 90.0, rotation_speed)
 	else:
-		# Lecimy w górę -> obracaj w górę
-		rotation_degrees = lerp(rotation_degrees, -max_rotation, 5 * delta)
-
-# Funkcja wykrywająca kolizję (wymaga włączenia Contact Monitor w Inspectorze!)
+		# WZNOSZENIE:
+		# Trzymamy -30.
+		if rotation_degrees > -30.0:
+			rotation_degrees = -30.0
+			
 func _on_body_entered(body):
-	# Jeśli w coś uderzyliśmy (rura lub ziemia) -> Koniec Gry
-	get_tree().reload_current_scene() # Najprostszy restart
+	if body.is_in_group("obstacles"):
+		get_tree().reload_current_scene()

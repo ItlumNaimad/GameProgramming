@@ -29,6 +29,8 @@ animations = [{
 }]
 
 [node name="Bird" type="RigidBody2D"]
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_i8bdw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

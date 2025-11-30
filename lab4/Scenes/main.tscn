@@ -1,30 +1,55 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmcyjfhucjfju"]
+[gd_scene load_steps=8 format=3 uid="uid://dmcyjfhucjfju"]
 
 [ext_resource type="PackedScene" uid="uid://cjxei0bm8jowq" path="res://Scenes/bird.tscn" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://i02ror8dimst" path="res://Scripts/spawner.gd" id="2_bo1nx"]
 [ext_resource type="Script" uid="uid://dnmwte8gwh0ba" path="res://Scripts/background.gd" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://fswtmkrlscwf" path="res://Scenes/pipe.tscn" id="3_kry3j"]
 [ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="4_jjvhh"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_kry3j"]
+a = Vector2(6, 848)
+b = Vector2(817, 848)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_21xkr"]
+a = Vector2(815, 6)
+b = Vector2(-19, 6)
 
 [node name="Main" type="Node2D"]
 
 [node name="Bird" parent="." instance=ExtResource("1_jjgbg")]
-position = Vector2(247, 386)
+position = Vector2(155, 418)
+rotation = 226.862
+freeze = true
 
 [node name="PipeSpawner" type="Node2D" parent="."]
+position = Vector2(493, 1)
 script = ExtResource("2_bo1nx")
+pipe_scene = ExtResource("3_kry3j")
 
 [node name="Timer" type="Timer" parent="PipeSpawner"]
-wait_time = 2.0
+wait_time = 1.705
 autostart = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("3_8gbba")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(336, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(226, 428)
-scale = Vector2(3.08621, 3.33203)
+position = Vector2(239, 419)
+scale = Vector2(3.26724, 3.38867)
 texture = ExtResource("4_jjvhh")
 region_enabled = true
 region_rect = Rect2(-1.5, -0.5, 145.5, 256.5)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-5, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("SegmentShape2D_kry3j")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("SegmentShape2D_21xkr")

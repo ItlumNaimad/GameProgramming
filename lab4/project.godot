@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=448
-window/size/viewport_height=858
+window/size/viewport_width=480
+window/size/viewport_height=854
+window/stretch/mode="canvas_items"
 
 [input]
 
@@ -30,4 +31,5 @@ jump={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"

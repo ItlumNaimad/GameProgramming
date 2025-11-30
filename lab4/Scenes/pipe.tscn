@@ -1,28 +1,52 @@
-[gd_scene load_steps=4 format=3 uid="uid://fswtmkrlscwf"]
+[gd_scene load_steps=6 format=3 uid="uid://fswtmkrlscwf"]
 
 [ext_resource type="Script" uid="uid://di0eaqidfj3pc" path="res://Scripts/pipe.gd" id="1_n21g0"]
+[ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="2_hnit7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n21g0"]
+size = Vector2(20, 122.606)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hnit7"]
+size = Vector2(19.2167, 134.745)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1buf"]
+size = Vector2(78, 236)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_n21g0")
 
-[node name="TopPipe" type="Sprite2D" parent="."]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="TopPipe"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D"]
-shape = SubResource("RectangleShape2D_n21g0")
-
 [node name="BottomPipe" type="Sprite2D" parent="."]
+position = Vector2(42.75, 773.5)
+scale = Vector2(3.27084, 4.56349)
+texture = ExtResource("2_hnit7")
+region_enabled = true
+region_rect = Rect2(329, 0, 28, 126)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="BottomPipe"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe/StaticBody2D"]
+position = Vector2(-0.742269, 0)
+shape = SubResource("RectangleShape2D_n21g0")
+
+[node name="TopPipe" type="Sprite2D" parent="."]
+position = Vector2(38.875, -4.99985)
+scale = Vector2(3.26852, 3.92593)
+texture = ExtResource("2_hnit7")
+region_enabled = true
+region_rect = Rect2(301, 0, 27, 135)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="TopPipe"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D"]
+position = Vector2(-0.391641, -2.16512)
 shape = SubResource("RectangleShape2D_hnit7")
 
 [node name="ScoreArea" type="Area2D" parent="."]
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea"]
+position = Vector2(58, 370)
+shape = SubResource("RectangleShape2D_p1buf")
+
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-276, 428)
+scale = Vector2(13.975, 42.475)

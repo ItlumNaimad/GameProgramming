@@ -5,7 +5,8 @@ extends Node2D
 
 func _ready():
 	# Podłącz sygnał "timeout" z Timera w kodzie lub przez edytor
-	$Timer.timeout.connect(spawn_pipe)
+	#$Timer.timeout.connect(spawn_pipe)
+	pass
 
 func spawn_pipe():
 	# 1. Tworzymy nową instancję rury z pliku tscn
@@ -16,5 +17,5 @@ func spawn_pipe():
 	
 	# 3. Losujemy wysokość (offset Y)
 	# randf_range losuje liczbę zmiennoprzecinkową z zakresu
-	var random_y = randf_range(-150.0, 150.0)
+	var random_y = randf_range(-200.0, 200.0)
 	pipe_instance.position.y = random_y
