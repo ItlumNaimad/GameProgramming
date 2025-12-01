@@ -5,12 +5,14 @@ extends RigidBody2D
 # ZMIEŃ WARTOŚĆ: Tutaj dajemy np. 5.0 do 10.0. 
 # To oznacza "przesuwaj się o 10% dystansu w każdej klatce".
 # Nie dawaj tu dużych liczb typu 100 czy 400!
-@export var rotation_speed = 0.1
+@export var rotation_speed = 0.08
 
 var game_started = false
 
 func _ready():
 	freeze = true 
+	if ready:
+		rotation_degrees = 0
 	# Upewnij się, że w Inspektorze "Lock Rotation" jest zaznaczone!
 
 func _input(event):
@@ -45,12 +47,12 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		#if randi_range(0, 15) < 3:
 		#	angular_velocity += 0.1
 		#state.apply_torque_impulse(rotation_speed)
-		rotation_degrees = lerp(rotation_degrees, 40.0, rotation_speed)
+		rotation_degrees = lerp(rotation_degrees, 50.0, rotation_speed/2)
 	else:
 		# WZNOSZENIE:
 		# Trzymamy -30.
 		if rotation_degrees > -30.0:
-			rotation_degrees = -30.0
+			rotation_degrees = lerp(rotation_degrees,-40.0, rotation_speed*1.6)
 			
 func _on_body_entered(body):
 	if body.is_in_group("obstacles"):
