@@ -29,6 +29,7 @@ animations = [{
 }]
 
 [node name="Bird" type="RigidBody2D"]
+lock_rotation = true
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_i8bdw")
@@ -40,3 +41,5 @@ shape = SubResource("CircleShape2D_mcegt")
 position = Vector2(1.54972e-06, 0.5)
 scale = Vector2(2.94737, 3.15385)
 sprite_frames = SubResource("SpriteFrames_rr33m")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

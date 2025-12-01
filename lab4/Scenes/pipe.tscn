@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="2_hnit7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n21g0"]
-size = Vector2(20, 122.606)
+size = Vector2(25.9872, 123.865)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hnit7"]
-size = Vector2(19.2167, 134.745)
+size = Vector2(25.0878, 136.528)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p1buf"]
-size = Vector2(78, 236)
+size = Vector2(78, 234)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_n21g0")
@@ -24,8 +24,9 @@ region_rect = Rect2(329, 0, 28, 126)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="BottomPipe"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe/StaticBody2D"]
-position = Vector2(-0.742269, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe/StaticBody2D" groups=["obstacles"]]
+position = Vector2(-0.0764332, -0.629379)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_n21g0")
 
 [node name="TopPipe" type="Sprite2D" parent="."]
@@ -37,16 +38,19 @@ region_rect = Rect2(301, 0, 27, 135)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="TopPipe"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D"]
-position = Vector2(-0.391641, -2.16512)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D" groups=["obstacles"]]
+position = Vector2(0.0382433, -1.27358)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_hnit7")
 
-[node name="ScoreArea" type="Area2D" parent="."]
+[node name="ScoreArea" type="Area2D" parent="." groups=["score_zones"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea"]
-position = Vector2(58, 370)
+position = Vector2(58, 371)
 shape = SubResource("RectangleShape2D_p1buf")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(-276, 428)
 scale = Vector2(13.975, 42.475)
+
+[connection signal="body_entered" from="ScoreArea" to="." method="_on_score_area_body_entered"]
