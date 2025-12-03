@@ -1,7 +1,7 @@
 extends Node
 
 var score = 0
-@onready var score_label = $CanvasLayer/ScoreLabel
+@onready var score_label = $UI/ScoreLabel
 @onready var bird = $Bird
 @onready var pipe_timer = $PipeSpawner/Timer
 

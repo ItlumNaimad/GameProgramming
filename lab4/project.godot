@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Lab4"
-run/main_scene="uid://dmcyjfhucjfju"
+run/main_scene="uid://clirrkq7ipmbd"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 

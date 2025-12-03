@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmcyjfhucjfju"]
+[gd_scene load_steps=21 format=3 uid="uid://dmcyjfhucjfju"]
 
 [ext_resource type="Script" uid="uid://d3nr40ngx4lxu" path="res://Scripts/main.gd" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://cjxei0bm8jowq" path="res://Scenes/bird.tscn" id="1_jjgbg"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://fswtmkrlscwf" path="res://Scenes/pipe.tscn" id="3_kry3j"]
 [ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="4_jjvhh"]
 [ext_resource type="FontFile" uid="uid://b16hxbgmbex4i" path="res://assets/FlappyBirdRegular-9Pq0.ttf" id="7_6bp64"]
+[ext_resource type="Script" uid="uid://djd57ws2v7en3" path="res://Scripts/ui.gd" id="7_344ge"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_kry3j"]
 a = Vector2(6, 848)
@@ -15,6 +16,18 @@ b = Vector2(817, 848)
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_21xkr"]
 a = Vector2(815, 6)
 b = Vector2(-19, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdnlq"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(302.338, 136.84, 21.5904, 22.7471)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkdf5"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(266.02, 228.403, 22.2635, 22.9816)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wsu2k"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(241.519, 228.958, 22.9098, 22.3832)
 
 [sub_resource type="LabelSettings" id="LabelSettings_344ge"]
 font = ExtResource("7_6bp64")
@@ -26,12 +39,31 @@ shadow_size = 13
 shadow_color = Color(0, 0, 0, 0.721569)
 shadow_offset = Vector2(2.67, -2.08)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bp64"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(145.794, 220.574, 87.7034, 22.8589)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_344ge"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(171.452, 118.903, 40.1196, 53.6483)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ynf5e"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(145.794, 58.2573, 112.428, 55.9809)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hptm8"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(146.089, 198.851, 94.2828, 21.3801)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1ilt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6iyac"]
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_21xkr")
 
 [node name="Bird" parent="." instance=ExtResource("1_jjgbg")]
 position = Vector2(155, 418)
-rotation = 226.862
 freeze = true
 
 [node name="PipeSpawner" type="Node2D" parent="."]
@@ -66,9 +98,11 @@ shape = SubResource("SegmentShape2D_kry3j")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("SegmentShape2D_21xkr")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("7_344ge")
+medal_textures = Array[Texture2D]([SubResource("AtlasTexture_fdnlq"), SubResource("AtlasTexture_jkdf5"), SubResource("AtlasTexture_wsu2k")])
 
-[node name="ScoreLabel" type="Label" parent="CanvasLayer"]
+[node name="ScoreLabel" type="Label" parent="UI"]
 offset_left = 1.0
 offset_top = 37.0
 offset_right = 480.0
@@ -76,3 +110,73 @@ offset_bottom = 144.0
 text = "0"
 label_settings = SubResource("LabelSettings_344ge")
 horizontal_alignment = 1
+
+[node name="Info" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 50.0
+offset_top = 111.0
+offset_right = 427.0
+offset_bottom = 705.0
+
+[node name="GetReady" type="TextureRect" parent="UI/Info"]
+layout_mode = 0
+offset_left = -5.0
+offset_right = 388.0
+offset_bottom = 142.0
+texture = SubResource("AtlasTexture_6bp64")
+
+[node name="Tap" type="TextureRect" parent="UI/Info"]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 253.0
+offset_right = 360.0
+offset_bottom = 625.0
+texture = SubResource("AtlasTexture_344ge")
+
+[node name="GameOver" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="TextureRect" parent="UI/GameOver"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_ynf5e")
+
+[node name="GameOverTitle" type="TextureRect" parent="UI/GameOver/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_hptm8")
+
+[node name="ScoreContainer" type="VBoxContainer" parent="UI/GameOver/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="UI/GameOver/Panel/ScoreContainer"]
+layout_mode = 2
+
+[node name="BestScoreLabel" type="Label" parent="UI/GameOver/Panel/ScoreContainer"]
+layout_mode = 2
+
+[node name="Medal" type="TextureRect" parent="UI/GameOver/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RestartButton" type="TextureButton" parent="UI/GameOver"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = SubResource("AtlasTexture_d1ilt")
+
+[node name="MenuButton" type="TextureButton" parent="UI/GameOver"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = SubResource("AtlasTexture_6iyac")

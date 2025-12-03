@@ -26,7 +26,6 @@ region_rect = Rect2(329, 0, 28, 126)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe/StaticBody2D" groups=["obstacles"]]
 position = Vector2(-0.0764332, -0.629379)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_n21g0")
 
 [node name="TopPipe" type="Sprite2D" parent="."]
@@ -40,7 +39,6 @@ region_rect = Rect2(301, 0, 27, 135)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe/StaticBody2D" groups=["obstacles"]]
 position = Vector2(0.0382433, -1.27358)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_hnit7")
 
 [node name="ScoreArea" type="Area2D" parent="." groups=["score_zones"]]
