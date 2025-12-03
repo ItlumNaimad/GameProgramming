@@ -1,8 +1,9 @@
 extends CanvasLayer
 
 # Referencje do elementów UI
-@onready var score_label: Label = $GameOver/Panel/ScoreContainer/ScoreLabel
+@onready var score_label: Label = $ScoreLabel
 @onready var get_ready_screen = $"Info"
+
 @onready var game_over_screen: Control = $GameOver
 @onready var final_score_label = $GameOver/Panel/ScoreContainer/ScoreLabel
 @onready var best_score_label = $GameOver/Panel/ScoreContainer/BestScoreLabel
