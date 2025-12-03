@@ -9,7 +9,7 @@ extends CanvasLayer
 @onready var best_score_label = $GameOver/Panel/ScoreContainer/BestScoreLabel
 @onready var medal_icon = $GameOver/Panel/Medal
 
-# Tablica z teksturami medali (przypisz w Inspektorze!)
+# Tablica z teksturami medali 
 # Kolejność: 0=Brak/Brąz, 1=Srebro, 2=Złoto, 3=Platyna (wg instrukcji PDF)
 @export var medal_textures: Array[Texture2D]
 
@@ -34,7 +34,7 @@ func show_game_over(current_score, best_score):
 	final_score_label.text = str(current_score)
 	best_score_label.text = str(best_score)
 
-	# Logika Medali (tłumaczenie switch-case z PDF na GDScript) [cite: 604-617]
+	# Logika Medali (tłumaczenie switch-case z PDF na GDScript) 
 	var medal_index = -1
 
 	if current_score >= 40: # Platyna (przykładowe progi)

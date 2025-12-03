@@ -73,7 +73,7 @@ outline_color = Color(0.0807833, 0.0807833, 0.0807833, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1ilt"]
 atlas = ExtResource("4_jjvhh")
-region = Rect2(286.936, 84.3269, 13.6693, 13.6693)
+region = Rect2(286.246, 83.5587, 14.5686, 14.4375)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6iyac"]
 atlas = ExtResource("4_jjvhh")
@@ -203,10 +203,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 6.0
-offset_right = 60.0
-offset_bottom = 27.0
+offset_left = 38.0
+offset_top = 1.0
+offset_right = 64.0
+offset_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = SubResource("AtlasTexture_d1ilt")
@@ -220,3 +220,6 @@ offset_right = 178.0
 offset_bottom = 69.0
 texture_normal = SubResource("AtlasTexture_6iyac")
 stretch_mode = 1
+
+[connection signal="pressed" from="UI/GameOver/RestartButton" to="UI" method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOver/MenuButton" to="UI" method="_on_menu_pressed"]
