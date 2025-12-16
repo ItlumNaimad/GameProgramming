@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=3 uid="uid://clirrkq7ipmbd"]
+
+[ext_resource type="Texture2D" uid="uid://callsws7y1hcs" path="res://assets/Mobile - Flappy Bird - Miscellaneous - General Sprites.png" id="1_1rerr"]
+[ext_resource type="Script" uid="uid://brt4mraqbbx10" path="res://Scripts/menu.gd" id="1_cayip"]
+[ext_resource type="Script" uid="uid://dt00jsoenlnke" path="res://Scripts/LabelMover.gd" id="2_xhh6f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cayip"]
+atlas = ExtResource("1_1rerr")
+region = Rect2(243.075, 213.138, 38.2536, 13.0622)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_158mb"]
+atlas = ExtResource("1_1rerr")
+region = Rect2(244.693, 173.165, 38.7201, 13.5287)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cayip")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="TextureRect"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="TextureRect/ParallaxBackground"]
+motion_mirroring = Vector2(300, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="TextureRect/ParallaxBackground/ParallaxLayer"]
+position = Vector2(401, 427)
+scale = Vector2(5.63636, 3.28461)
+texture = ExtResource("1_1rerr")
+region_enabled = true
+region_rect = Rect2(-0.549408, -2.7548, 143.549, 260.228)
+
+[node name="Title" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -373.0
+offset_right = 2.0
+offset_bottom = -230.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_xhh6f")
+
+[node name="Sprite2D" type="Sprite2D" parent="Title"]
+position = Vector2(241, 79)
+scale = Vector2(4.47423, 6.70833)
+texture = ExtResource("1_1rerr")
+region_enabled = true
+region_rect = Rect2(145.563, 172.738, 97.671, 22.5394)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(150, 226.265)
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -165.0
+offset_top = -42.0
+offset_right = 150.54
+offset_bottom = 184.265
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Play" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_cayip")
+stretch_mode = 1
+
+[node name="Exit" type="TextureButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(39.61, 75)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_158mb")
+stretch_mode = 1
+
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
