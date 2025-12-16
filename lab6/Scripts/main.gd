@@ -20,11 +20,12 @@ func _ready():
 	bird.player_died.connect(_on_game_over)
 	bird.game_started.connect(_on_game_started)
 	
-	# Connect signals for ads
+	# Connect signals from the UI
 	ui.watch_ad_pressed.connect(_on_watch_ad_requested)
+	
+	# Initialize and show banner ad
 	if Engine.has_singleton("AdsManager"):
 		var ads_manager = Engine.get_singleton("AdsManager")
-		ads_manager.reward_earned.connect(continue_game_after_ad)
 		ads_manager.show_banner()
 
 func add_point():
@@ -36,6 +37,8 @@ func _on_game_started():
 	score = 0
 	ui.show_game_play()
 	pipe_timer.start()
+	
+	# Hide banner during gameplay
 	if Engine.has_singleton("AdsManager"):
 		Engine.get_singleton("AdsManager").hide_banner()
 
@@ -43,6 +46,7 @@ func _on_game_over():
 	current_state = State.GAME_OVER
 	pipe_timer.stop()
 	
+	# Stop pipes (assuming they are in the "obstacles" group)
 	get_tree().call_group("obstacles", "set_process", false)
 	
 	if score > best_score:
@@ -53,27 +57,34 @@ func _on_game_over():
 	
 	if Engine.has_singleton("AdsManager"):
 		var ads_manager = Engine.get_singleton("AdsManager")
-		ads_manager.game_count += 1
-		if ads_manager.game_count % 3 == 0:
-			ads_manager.show_interstitial()
+		# Increment death count and potentially show interstitial
+		ads_manager.on_player_died()
+		# Show banner again on game over screen
 		ads_manager.show_banner()
 
+# Called when the "Watch Ad to Continue" button is pressed in the UI
 func _on_watch_ad_requested():
 	if Engine.has_singleton("AdsManager"):
-		Engine.get_singleton("AdsManager").show_rewarded()
+		# Request to show rewarded ad, passing continue_game as the callback
+		Engine.get_singleton("AdsManager").show_rewarded_ad(Callable(self, "continue_game"))
 
-func continue_game_after_ad():
-	print("Kontynuujemy grę!")
+# This function implements the resurrection logic after a rewarded ad is watched
+func continue_game():
+	print("Main: Resuming game after rewarded ad!")
 	
 	# 1. Usuń stare przeszkody
 	get_tree().call_group("obstacles", "queue_free")
 	
-	# 2. Reset ptaka
-	bird.reset_for_continue()
+	# 2. Reset bird position and velocity
+	bird.reset_for_continue() # Assuming bird.gd has this function
 	
 	# 3. Przywrócenie stanu gry
 	current_state = State.PLAYING 
 	
-	# 4. UI i Timer
+	# 4. Update UI and restart pipe timer
 	ui.show_game_play()
 	pipe_timer.start()
+	
+	# Hide banner during resumed gameplay
+	if Engine.has_singleton("AdsManager"):
+		Engine.get_singleton("AdsManager").hide_banner()

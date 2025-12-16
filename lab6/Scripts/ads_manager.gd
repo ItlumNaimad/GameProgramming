@@ -6,110 +6,143 @@ extends Node
 #       Pełni rolę pośrednika (fasady) między logiką gry a wtyczką AdMob.
 # ------------------------------------------------------------------------------
 
-# Sygnał emitowany, gdy gracz obejrzy reklamę z nagrodą do samego końca.
-# Gra (np. main.gd) powinna nasłuchiwać tego sygnału, aby wskrzesić gracza.
-signal reward_earned
+# Counters
+var death_count_for_interstitial : int = 0
 
-# Referencja do obiektu/węzła wtyczki AdMob.
-var admob = null
+# Ad Objects
+var ad_view : AdView
+var interstitial_ad : InterstitialAd
+var rewarded_ad : RewardedAd
 
-# Licznik rozegranych gier. Służy do wyświetlania reklamy pełnoekranowej (Interstitial)
-# co określoną liczbę podejść (np. co 3 gry).
-var game_count = 0
+# Load Callbacks (Strongly typed for Poing Studios API)
+var interstitial_load_callback := InterstitialAdLoadCallback.new()
+var rewarded_load_callback := RewardedAdLoadCallback.new()
+
+# Callback to execute when reward is earned (passed from UI)
+var _on_reward_earned_callback : Callable
 
 func _ready():
-	# Czekamy chwilę na pełną inicjalizację drzewa sceny, aby uniknąć błędów
-	# przy szukaniu węzłów startowych.
-	await get_tree().create_timer(0.5).timeout
+	# Initialize the MobileAds SDK
+	MobileAds.initialize()
 	
-	# Próba pobrania instancji AdMob.
-	# W zależności od wersji wtyczki może to być Singleton silnika lub węzeł w Autoload (/root/AdMob).
-	if Engine.has_singleton("AdMob"):
-		admob = Engine.get_singleton("AdMob")
-	elif get_node_or_null("/root/AdMob"):
-		admob = get_node("/root/AdMob")
+	# Setup Interstitial Load Callbacks
+	interstitial_load_callback.on_ad_failed_to_load = _on_interstitial_failed_to_load
+	interstitial_load_callback.on_ad_loaded = _on_interstitial_loaded
 	
-	if admob:
-		print("AdsManager: Znaleziono wtyczkę AdMob.")
-		# Podłączamy sygnały (callbacki) emitowane przez wtyczkę:
+	# Setup Rewarded Load Callbacks
+	rewarded_load_callback.on_ad_failed_to_load = _on_rewarded_failed_to_load
+	rewarded_load_callback.on_ad_loaded = _on_rewarded_loaded
+	
+	# Initial Load of Ads
+	load_banner()
+	load_interstitial()
+	load_rewarded()
+
+# ------------------------------------------------------------------------------
+# BANNER ADS
+# ------------------------------------------------------------------------------
+func load_banner():
+	# Destroy existing banner if any
+	if ad_view:
+		ad_view.destroy()
+		ad_view = null
 		
-		# Gdy reklama z nagrodą się załaduje (jest gotowa do wyświetlenia)
-		admob.rewarded_ad_loaded.connect(_on_rewarded_ad_loaded)
-		
-		# Gdy nie uda się załadować reklamy (np. brak internetu)
-		admob.rewarded_ad_failed_to_load.connect(_on_rewarded_ad_failed_to_load)
-		
-		# Gdy gracz zamknie reklamę (niezależnie czy obejrzał do końca)
-		admob.rewarded_video_ad_closed.connect(_on_rewarded_ad_closed)
-		
-		# KLUCZOWE: Gdy gracz obejrzy reklamę i zasłużył na nagrodę
-		admob.user_earned_rewarded_item.connect(_on_user_earned_rewarded_item)
-		
-		# Rozpoczynamy ładowanie reklam w tle (pre-loading),
-		# aby były gotowe natychmiast, gdy gracz ich potrzebuje.
-		load_ads()
+	var unit_id : String
+	if OS.get_name() == "Android":
+		unit_id = "ca-app-pub-3940256099942544/6300978111" # Android Test ID
+	elif OS.get_name() == "iOS":
+		unit_id = "ca-app-pub-3940256099942544/2934735716" # iOS Test ID
 	else:
-		printerr("AdsManager: Nie znaleziono wtyczki AdMob! Upewnij się, że jest włączona w Project Settings.")
+		unit_id = "ca-app-pub-3940256099942544/6300978111" # Fallback
+		
+	# Create and load the banner view at the bottom of the screen
+	ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM)
+	ad_view.load_ad(AdRequest.new())
 
-# Funkcja zlecająca załadowanie wszystkich typów reklam.
-# Reklamy ładują się asynchronicznie w tle.
-func load_ads():
-	if admob:
-		admob.load_banner()
-		admob.load_interstitial()
-		admob.load_rewarded_video()
-
-# --- BANNER (Pasek reklamowy) ---
-
-# Wyświetla banner (zazwyczaj mały pasek na dole ekranu).
 func show_banner():
-	if admob:
-		admob.show_banner()
+	# AdView shows automatically when loaded, but we can ensure it's visible if we hid it
+	if ad_view:
+		ad_view.show()
 
-# Ukrywa banner (np. podczas aktywnej rozgrywki, żeby nie zasłaniał widoku).
 func hide_banner():
-	if admob:
-		admob.hide_banner()
+	if ad_view:
+		ad_view.hide()
 
-# --- INTERSTITIAL (Reklama pełnoekranowa) ---
+# ------------------------------------------------------------------------------
+# INTERSTITIAL ADS
+# ------------------------------------------------------------------------------
+func load_interstitial():
+	var unit_id : String
+	if OS.get_name() == "Android":
+		unit_id = "ca-app-pub-3940256099942544/1033173712"
+	elif OS.get_name() == "iOS":
+		unit_id = "ca-app-pub-3940256099942544/4411468910"
+	else:
+		unit_id = "ca-app-pub-3940256099942544/1033173712"
+		
+	InterstitialAdLoader.new().load(unit_id, AdRequest.new(), interstitial_load_callback)
 
-# Wyświetla reklamę pełnoekranową (przerywnik).
-# Powinna być stosowana w momentach naturalnych przerw (np. ekran Game Over).
+func _on_interstitial_loaded(ad : InterstitialAd):
+	print("AdsManager: Interstitial loaded.")
+	interstitial_ad = ad
+
+func _on_interstitial_failed_to_load(adError : LoadAdError):
+	print("AdsManager: Interstitial failed to load: ", adError.message)
+
+func on_player_died():
+	death_count_for_interstitial += 1
+	print("AdsManager: Death count: ", death_count_for_interstitial)
+	
+	# Show interstitial every 3rd death
+	if death_count_for_interstitial % 3 == 0:
+		show_interstitial()
+
 func show_interstitial():
-	if admob:
-		admob.show_interstitial()
-		# Po wyświetleniu reklama jest "zużyta", więc od razu ładujemy następną
-		# na kolejne wyświetlenie za kilka minut.
-		admob.load_interstitial()
+	if interstitial_ad:
+		interstitial_ad.show()
+		interstitial_ad = null # Clear reference as it's single use
+		load_interstitial() # Preload the next one
+	else:
+		print("AdsManager: Interstitial not ready yet.")
+		load_interstitial() # Try loading again
 
-# --- REWARDED (Wideo z nagrodą) ---
+# ------------------------------------------------------------------------------
+# REWARDED ADS
+# ------------------------------------------------------------------------------
+func load_rewarded():
+	var unit_id : String
+	if OS.get_name() == "Android":
+		unit_id = "ca-app-pub-3940256099942544/5224354917"
+	elif OS.get_name() == "iOS":
+		unit_id = "ca-app-pub-3940256099942544/1712485313"
+	else:
+		unit_id = "ca-app-pub-3940256099942544/5224354917"
+		
+	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_load_callback)
 
-# Wyświetla reklamę, za którą gracz otrzymuje nagrodę (np. dodatkowe życie).
-func show_rewarded():
-	if admob:
-		admob.show_rewarded_video()
-		# Uwaga: Kolejną ładujemy dopiero po zamknięciu obecnej (w _on_rewarded_ad_closed)
+func _on_rewarded_loaded(ad : RewardedAd):
+	print("AdsManager: Rewarded Ad loaded.")
+	rewarded_ad = ad
 
-# --- CALLBACKI (Obsługa zdarzeń z wtyczki) ---
+func _on_rewarded_failed_to_load(adError : LoadAdError):
+	print("AdsManager: Rewarded Ad failed to load: ", adError.message)
 
-# Wywoływane przez AdMob, gdy gracz spełnił warunki nagrody (obejrzał wideo do końca).
-func _on_user_earned_rewarded_item(currency, amount):
-	print("AdsManager: Nagroda przyznana przez AdMob!")
-	# Przekazujemy informację dalej do gry (main.gd to odbierze)
-	reward_earned.emit()
+func show_rewarded_ad(on_reward_callback : Callable):
+	if rewarded_ad:
+		_on_reward_earned_callback = on_reward_callback
+		
+		var listener := OnUserEarnedRewardListener.new()
+		listener.on_user_earned_reward = _on_user_earned_reward
+		
+		rewarded_ad.show(listener)
+		rewarded_ad = null # Single use
+		load_rewarded() # Preload next
+	else:
+		print("AdsManager: Rewarded Ad not ready.")
+		load_rewarded() # Try loading again
 
-# Wywoływane, gdy gracz zamknie okno reklamy z nagrodą.
-func _on_rewarded_ad_closed():
-	print("AdsManager: Reklama z nagrodą zamknięta.")
-	# Ładujemy następną reklamę na przyszłość, aby była gotowa,
-	# gdy gracz znów zechce jej użyć (Pre-loading).
-	if admob:
-		admob.load_rewarded_video()
-
-# Informacja diagnostyczna - reklama gotowa do wyświetlenia.
-func _on_rewarded_ad_loaded():
-	print("AdsManager: Reklama z nagrodą załadowana i gotowa.")
-
-# Informacja diagnostyczna - błąd ładowania (np. brak internetu, złe ID).
-func _on_rewarded_ad_failed_to_load(error_code):
-	print("AdsManager: Błąd ładowania reklamy z nagrodą. Kod: ", error_code)
+func _on_user_earned_reward(rewarded_item : RewardedItem):
+	print("AdsManager: User earned reward: ", rewarded_item.amount, " ", rewarded_item.type)
+	# Execute the callback provided by the UI
+	if _on_reward_earned_callback.is_valid():
+		_on_reward_earned_callback.call()
