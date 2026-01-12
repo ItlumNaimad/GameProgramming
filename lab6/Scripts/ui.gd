@@ -10,7 +10,7 @@ signal watch_ad_pressed
 @onready var final_score_label = $GameOver/Panel/ScoreContainer/ScoreLabel
 @onready var best_score_label = $GameOver/Panel/ScoreContainer/BestScoreLabel
 @onready var medal_icon = $GameOver/Panel/Medal
-@onready var ad_button = $GameOver/Panel/AdButton
+@onready var ad_button = $GameOver/AdButton
 
 # Tablica z teksturami medali 
 # Kolejność: 0=Brak/Brąz, 1=Srebro, 2=Złoto, 3=Platyna (wg instrukcji PDF)
@@ -67,7 +67,7 @@ func _on_restart_pressed():
 	get_tree().reload_current_scene()
 
 func _on_menu_pressed():
-	get_tree().change_scene_to_file("res://scenes/menu.tscn")
+	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
 
 func _on_ad_button_pressed():
 	watch_ad_pressed.emit()

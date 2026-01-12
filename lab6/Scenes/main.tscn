@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dmcyjfhucjfju"]
+[gd_scene load_steps=24 format=3 uid="uid://dmcyjfhucjfju"]
 
 [ext_resource type="Script" uid="uid://d3nr40ngx4lxu" path="res://Scripts/main.gd" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://cjxei0bm8jowq" path="res://Scenes/bird.tscn" id="1_jjgbg"]
@@ -78,6 +78,10 @@ region = Rect2(286.246, 83.5587, 14.5686, 14.4375)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6iyac"]
 atlas = ExtResource("4_jjvhh")
 region = Rect2(287.136, 58.0765, 13.3188, 14.0198)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k12tt"]
+atlas = ExtResource("4_jjvhh")
+region = Rect2(246.304, 134.42, 39.8262, 13.0578)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_21xkr")
@@ -221,5 +225,15 @@ offset_bottom = 69.0
 texture_normal = SubResource("AtlasTexture_6iyac")
 stretch_mode = 1
 
+[node name="AdButton" type="TextureButton" parent="UI/GameOver"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 618.0
+offset_right = 164.0
+offset_bottom = 631.0
+scale = Vector2(5.88, 5.48)
+texture_normal = SubResource("AtlasTexture_k12tt")
+
 [connection signal="pressed" from="UI/GameOver/RestartButton" to="UI" method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOver/MenuButton" to="UI" method="_on_menu_pressed"]
+[connection signal="pressed" from="UI/GameOver/AdButton" to="UI" method="_on_ad_button_pressed"]
